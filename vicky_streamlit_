@@ -1,0 +1,73 @@
+import streamlit as st
+import os
+import openai
+
+# --- CONFIGURE PAGE ---
+st.set_page_config(
+    page_title="🎙️ VICKY – Vocal Intelligence Coach",
+    page_icon="🎤",
+    layout="centered"
+)
+
+# --- SET OPENAI KEY ---
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Or manually: openai.api_key = "your-api-key"
+
+# --- HEADER ---
+st.title("🎙️ Meet VICKY – Your Vocal Intelligence Coach")
+st.subheader("Also known as VIC")
+
+st.markdown("""
+VICKY is your AI-powered mentor for vocal growth, performance, and confidence.
+""")
+
+# --- USER GOALS ---
+st.markdown("### ✍️ Tell VICKY Your Vocal Goals")
+user_goal = st.text_input("What would you like help with today?", placeholder="e.g. Improving pitch, tone control, breath support...")
+
+# --- AUDIO UPLOAD ---
+st.markdown("### 🎧 Upload Your Vocal Sample")
+audio_file = st.file_uploader("Upload a recording (MP3 or WAV)", type=["mp3", "wav"])
+
+if audio_file:
+    st.audio(audio_file, format="audio/wav")
+    st.success("Vocal sample received!")
+
+# --- CHAT INTERFACE ---
+st.markdown("### 💬 Talk to VICKY")
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+user_input = st.text_input("Ask VICKY something...", key="chat_input")
+
+if user_input:
+    st.session_state.chat_history.append({"role": "user", "content": user_input})
+
+    # ---- AI RESPONSE (FAKE OR REAL) ----
+    if openai.api_key:
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": "You are VICKY, a friendly and skilled vocal coach who helps people improve their singing and speaking voices."}
+                ] + st.session_state.chat_history
+            )
+            reply = response['choices'][0]['message']['content']
+        except Exception as e:
+            reply = "Sorry, I couldn’t process your request. Check your API key or try again."
+    else:
+        reply = "This is a sample response. Connect OpenAI to get live feedback."
+
+    st.session_state.chat_history.append({"role": "assistant", "content": reply})
+
+# --- DISPLAY CHAT ---
+for chat in st.session_state.chat_history:
+    if chat["role"] == "user":
+        st.markdown(f"**You:** {chat['content']}")
+    else:
+        st.markdown(f"**VICKY:** {chat['content']}")
+
+# --- FOOTER ---
+st.markdown("---")
+st.caption("VICKY is part of the Nrth Eydn Ltd. creative development platform. Powered by AI. Guided by purpose.")
+
