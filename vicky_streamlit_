@@ -1,73 +1,70 @@
+streamlit run vicky_streamlit_app.py
 import streamlit as st
-import os
-import openai
 
-# --- CONFIGURE PAGE ---
+# --- PAGE CONFIG ---
 st.set_page_config(
     page_title="🎙️ VICKY – Vocal Intelligence Coach",
     page_icon="🎤",
     layout="centered"
 )
 
-# --- SET OPENAI KEY ---
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Or manually: openai.api_key = "your-api-key"
-
 # --- HEADER ---
 st.title("🎙️ Meet VICKY – Your Vocal Intelligence Coach")
 st.subheader("Also known as VIC")
 
 st.markdown("""
-VICKY is your AI-powered mentor for vocal growth, performance, and confidence.
+Welcome! I'm **VICKY**, your AI-powered vocal coach.  
+I'm here to help you warm up, refine your technique, and track your progress.
 """)
 
-# --- USER GOALS ---
-st.markdown("### ✍️ Tell VICKY Your Vocal Goals")
-user_goal = st.text_input("What would you like help with today?", placeholder="e.g. Improving pitch, tone control, breath support...")
+# --- VOCAL GOAL INPUT ---
+st.markdown("### ✍️ What's your vocal goal today?")
+user_goal = st.text_input("Enter your focus (e.g. 'Improve pitch', 'Better breath control')")
+
+if user_goal:
+    st.success(f"Goal saved: {user_goal}")
 
 # --- AUDIO UPLOAD ---
 st.markdown("### 🎧 Upload Your Vocal Sample")
-audio_file = st.file_uploader("Upload a recording (MP3 or WAV)", type=["mp3", "wav"])
+audio_file = st.file_uploader("Upload an audio file (MP3 or WAV)", type=["mp3", "wav"])
 
 if audio_file:
-    st.audio(audio_file, format="audio/wav")
-    st.success("Vocal sample received!")
+    st.audio(audio_file, format='audio/wav')
+    st.success("Vocal sample uploaded successfully!")
 
 # --- CHAT INTERFACE ---
-st.markdown("### 💬 Talk to VICKY")
+st.markdown("### 💬 Chat with VICKY")
 
+# Initialize chat history
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-user_input = st.text_input("Ask VICKY something...", key="chat_input")
+# User input
+user_input = st.text_input("Ask me a vocal question or describe an issue you're facing:")
 
 if user_input:
     st.session_state.chat_history.append({"role": "user", "content": user_input})
 
-    # ---- AI RESPONSE (FAKE OR REAL) ----
-    if openai.api_key:
-        try:
-            response = openai.ChatCompletion.create(
-                model="gpt-4",
-                messages=[
-                    {"role": "system", "content": "You are VICKY, a friendly and skilled vocal coach who helps people improve their singing and speaking voices."}
-                ] + st.session_state.chat_history
-            )
-            reply = response['choices'][0]['message']['content']
-        except Exception as e:
-            reply = "Sorry, I couldn’t process your request. Check your API key or try again."
-    else:
-        reply = "This is a sample response. Connect OpenAI to get live feedback."
+    # Simulated AI reply
+    simulated_replies = {
+        "pitch": "Let's work on pitch accuracy! Start with a slow 5-tone scale (Do-Re-Mi-Fa-So) and hold each note.",
+        "breath": "Try a 'hiss' exercise: Inhale deeply, then exhale with a steady hiss for as long as you can.",
+        "tone": "Focus on relaxed vocal cords and good posture. Sing an 'ahh' sound with minimal tension.",
+        "confidence": "Confidence comes from repetition and breath control. Sing in front of a mirror to build poise.",
+    }
 
-    st.session_state.chat_history.append({"role": "assistant", "content": reply})
+    lower_input = user_input.lower()
+    response = next((v for k, v in simulated_replies.items() if k in lower_input), "That's a great question! Keep your posture tall and your breath steady. Want to try a warmup?")
 
-# --- DISPLAY CHAT ---
+    st.session_state.chat_history.append({"role": "assistant", "content": response})
+
+# Display chat history
 for chat in st.session_state.chat_history:
-    if chat["role"] == "user":
-        st.markdown(f"**You:** {chat['content']}")
-    else:
-        st.markdown(f"**VICKY:** {chat['content']}")
+    speaker = "You" if chat["role"] == "user" else "VICKY"
+    st.markdown(f"**{speaker}:** {chat['content']}")
 
 # --- FOOTER ---
 st.markdown("---")
-st.caption("VICKY is part of the Nrth Eydn Ltd. creative development platform. Powered by AI. Guided by purpose.")
+st.caption("VICKY is part of the Nrth Eydn Ltd. creative development platform. Streamlit-only version.")
+
 
