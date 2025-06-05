@@ -1,0 +1,56 @@
+import streamlit as st
+
+# --- PAGE CONFIG ---
+st.set_page_config(page_title="Meet VICKY – Your Vocal Intelligence Coach", page_icon="🎙️", layout="centered")
+
+# --- HEADER ---
+st.title("🎙️ Meet VICKY – Your Vocal Intelligence Coach")
+st.subheader("Also known as VIC")
+
+# --- INTRO ---
+st.markdown("""
+VICKY (short for **Vocal Intelligence Coach**) is your AI-powered voice mentor.
+
+Whether you're a singer, speaker, student, or performer, **VIC** helps you unlock your vocal potential with smart, personalized guidance.
+
+---
+
+### 🔥 What VICKY Can Do
+
+#### 🗣️ Real-Time & Asynchronous Coaching
+- Join live sessions or send in your recordings for feedback anytime.
+
+#### 🎯 Feedback on Key Vocal Elements
+- **Pitch**: Stay in tune and hit every note with confidence.
+- **Tone**: Discover your signature sound and polish your resonance.
+- **Breath**: Learn to support your voice with powerful, relaxed breathing.
+- **Diction**: Improve clarity and pronunciation for every performance.
+- **Delivery**: Connect emotionally and stylistically with your audience.
+
+#### 🎵 Guided Warmups & Vocal Exercises
+- Curated warmups for all levels
+- Custom vocal drills based on your progress
+- Flexible routines for daily practice
+
+#### 📈 Progress Tracking & Personalized Goals
+- Visualize your vocal growth
+- Receive weekly reports
+- Stay motivated with custom exercises
+
+#### 💡 Encouragement & Education
+- Learn vocal techniques in a fun, supportive way
+- Get mindset tips to overcome stage fright and self-doubt
+""")
+
+# --- CALL TO ACTION ---
+st.markdown("---")
+st.markdown("### 🚀 Ready to train with VICKY?")
+st.markdown("Start a live session, upload a sample, or explore exercises tailored to you.")
+
+st.button("🎤 Start Vocal Session (Coming Soon)")
+st.button("📤 Upload My Voice Recording")
+st.button("📚 Browse Vocal Exercises")
+
+# --- FOOTER ---
+st.markdown("---")
+st.caption("VICKY is part of the Nrth Eydn Ltd. creative development platform. Powered by AI. Guided by purpose.")
