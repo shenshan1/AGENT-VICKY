@@ -1,4 +1,3 @@
-streamlit run vicky_streamlit_app.py
 import streamlit as st
 
 # --- PAGE CONFIG ---
@@ -13,58 +12,62 @@ st.title("🎙️ Meet VICKY – Your Vocal Intelligence Coach")
 st.subheader("Also known as VIC")
 
 st.markdown("""
-Welcome! I'm **VICKY**, your AI-powered vocal coach.  
-I'm here to help you warm up, refine your technique, and track your progress.
+VICKY (short for **Vocal Intelligence Coach**) is your AI-powered voice mentor.  
+Get help with pitch, tone, breath control, diction, delivery, and more.
 """)
 
-# --- VOCAL GOAL INPUT ---
-st.markdown("### ✍️ What's your vocal goal today?")
-user_goal = st.text_input("Enter your focus (e.g. 'Improve pitch', 'Better breath control')")
+st.divider()
+
+# --- VOCAL GOALS ---
+st.header("✍️ What's your vocal goal today?")
+user_goal = st.text_input("Enter your vocal focus (e.g. 'improve pitch', 'project better', 'build breath control')")
 
 if user_goal:
-    st.success(f"Goal saved: {user_goal}")
+    st.success(f"✅ Goal saved: *{user_goal}*")
 
 # --- AUDIO UPLOAD ---
-st.markdown("### 🎧 Upload Your Vocal Sample")
-audio_file = st.file_uploader("Upload an audio file (MP3 or WAV)", type=["mp3", "wav"])
+st.header("🎧 Upload Your Vocal Sample")
+audio_file = st.file_uploader("Choose a vocal recording (MP3 or WAV)", type=["mp3", "wav"])
 
 if audio_file:
     st.audio(audio_file, format='audio/wav')
-    st.success("Vocal sample uploaded successfully!")
+    st.success("✅ Audio uploaded successfully!")
 
 # --- CHAT INTERFACE ---
-st.markdown("### 💬 Chat with VICKY")
+st.header("💬 Chat with VICKY")
 
-# Initialize chat history
+# Initialize chat history if not already
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# User input
-user_input = st.text_input("Ask me a vocal question or describe an issue you're facing:")
+# Chat input
+user_input = st.text_input("Type your question here (e.g. 'How do I improve my tone?')", key="chat_input")
 
 if user_input:
     st.session_state.chat_history.append({"role": "user", "content": user_input})
 
-    # Simulated AI reply
-    simulated_replies = {
-        "pitch": "Let's work on pitch accuracy! Start with a slow 5-tone scale (Do-Re-Mi-Fa-So) and hold each note.",
-        "breath": "Try a 'hiss' exercise: Inhale deeply, then exhale with a steady hiss for as long as you can.",
-        "tone": "Focus on relaxed vocal cords and good posture. Sing an 'ahh' sound with minimal tension.",
-        "confidence": "Confidence comes from repetition and breath control. Sing in front of a mirror to build poise.",
-    }
+    # Simulated intelligent reply based on keywords
+    reply = "That's a great question! Let's explore that together."
 
-    lower_input = user_input.lower()
-    response = next((v for k, v in simulated_replies.items() if k in lower_input), "That's a great question! Keep your posture tall and your breath steady. Want to try a warmup?")
+    if "pitch" in user_input.lower():
+        reply = "Try practicing slow scales and matching a piano or tuner note-for-note."
+    elif "tone" in user_input.lower():
+        reply = "Your tone improves with good breath support and relaxed throat. Try humming exercises!"
+    elif "breath" in user_input.lower():
+        reply = "Use a 'hiss' exercise: inhale fully, then exhale slowly on a hiss to strengthen control."
+    elif "diction" in user_input.lower():
+        reply = "Practice tongue twisters slowly and clearly, focusing on consonants."
+    elif "confidence" in user_input.lower():
+        reply = "Confidence builds with routine and self-encouragement. Practice in front of a mirror."
 
-    st.session_state.chat_history.append({"role": "assistant", "content": response})
+    st.session_state.chat_history.append({"role": "vicky", "content": reply})
 
-# Display chat history
-for chat in st.session_state.chat_history:
-    speaker = "You" if chat["role"] == "user" else "VICKY"
-    st.markdown(f"**{speaker}:** {chat['content']}")
+# Display the chat
+for msg in st.session_state.chat_history:
+    speaker = "🧑 You" if msg["role"] == "user" else "🎙️ VICKY"
+    st.markdown(f"**{speaker}:** {msg['content']}")
 
 # --- FOOTER ---
-st.markdown("---")
-st.caption("VICKY is part of the Nrth Eydn Ltd. creative development platform. Streamlit-only version.")
-
+st.divider()
+st.caption("VICKY is part of the Nrth Eydn Ltd. creative development platform. Streamlit-only prototype.")
 
